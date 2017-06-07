@@ -11,7 +11,7 @@ public class PetContract {
     //Table을 생성할때 내부클래스로 사용
     public static final class PetEntry implements BaseColumns {
         //SQL문을 호출할때 사용할 각 Column의 이름을 상수로 사용
-        public static final String TABLENAME = "pets";
+        public static final String TABLE_NAME = "pets";
         //_id 컬럼
         public static final String _ID = "_id";
         //name column
@@ -24,8 +24,8 @@ public class PetContract {
         public static final String COLUMN_PET_WEIGHT = "weight";
 
         public static final int GENDER_UNKNOWN = 0;
-        public static final int GENDER_MAIL = 1;
-        public static final int GENDER_FEMAIL = 2;
+        public static final int GENDER_MALE = 1;
+        public static final int GENDER_FEMALE = 2;
 
     }
 

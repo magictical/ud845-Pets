@@ -26,6 +26,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.android.pets.data.PetDbHelper;
+import com.example.android.pets.data.PetContract.PetEntry;
+
 /**
  * Displays list of pets that were entered and stored in the app.
  */
@@ -45,7 +48,9 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        displayDatabaseInfo();
+        /*displayDatabaseInfo();*/
+        PetDbHelper mDbHelper = new PetDbHelper(this);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
     }
 
     private void displayDatabaseInfo() {
