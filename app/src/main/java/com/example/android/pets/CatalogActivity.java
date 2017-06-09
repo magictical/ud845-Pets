@@ -41,6 +41,12 @@ public class CatalogActivity extends AppCompatActivity {
     private PetDbHelper mPetDbHelper;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        displayDatabaseInfo();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
@@ -56,7 +62,6 @@ public class CatalogActivity extends AppCompatActivity {
         });
         mPetDbHelper = new PetDbHelper(this);
         /*SQLiteDatabase db = mPetDbHelper.getReadableDatabase();*/
-        displayDatabaseInfo();
     }
 
     private void displayDatabaseInfo() {
