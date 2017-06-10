@@ -31,6 +31,8 @@ import android.widget.TextView;
 import com.example.android.pets.data.PetDbHelper;
 import com.example.android.pets.data.PetContract.PetEntry;
 
+import static android.R.attr.max;
+
 /**
  * Displays list of pets that were entered and stored in the app.
  */
@@ -74,12 +76,58 @@ public class CatalogActivity extends AppCompatActivity {
 
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
+        //read data from the table by query
+
+        //커서에서 사용될 테이블이 여기서 정의 되니 가능하면 모든 테이블의 컬럼을 선택하는것이 편하다
+        String[] projection = { PetEntry._ID, PetEntry.COLUMN_PET_NAME, PetEntry.COLUMN_PET_BREED,
+        PetEntry.COLUMN_PET_GENDER, PetEntry.COLUMN_PET_WEIGHT};
+        String selection = PetEntry._ID;
+        String [] selectionArgs = { "max" };
+
+
+        //이제 테이블에 사용될 커서가 정의됨 위에서 테이블의 범위를 정의한것에 주의하자
+        Cursor cursor = db.query(
+                PetEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+                );
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
             TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            displayView.setText("The "+ PetEntry.TABLE_NAME +" table contains "+ cursor.getCount() + "\n");
+            displayView.append(PetEntry._ID + "-" + PetEntry.COLUMN_PET_NAME + "-" +
+            PetEntry.COLUMN_PET_BREED + " - " + PetEntry.COLUMN_PET_GENDER + " - " + PetEntry.COLUMN_PET_WEIGHT + "\n");
+
+            //index of each column
+            int idColumn = cursor.getColumnIndex(PetEntry._ID);
+            int nameColumn = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
+            int breedColumn = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
+            int genderColumn = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
+            int weightColumn = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
+
+
+            //use while clause to get a all data from pets table
+            while(cursor.moveToNext()) {
+                int _id = cursor.getInt(idColumn);
+                String name = cursor.getString(nameColumn);
+                String breed = cursor.getString(breedColumn);
+                int gender = cursor.getInt(genderColumn);
+                int weight = cursor.getInt(weightColumn);
+
+                displayView.append("\n"+ _id + " - " + name + " - " + breed + " - " + gender + " - " +
+                        weight + "\n");
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
